@@ -6,12 +6,14 @@
 
 defmodule Pingpong do
   def start() do
-    # Start 2 processes using spawn/3 with functions init_a/0 and init_b/0 and register them as :a and :b respectively
+    Process.register(spawn(Pingpong, :init_a, []), :a)
+    Process.register(spawn(Pingpong, :init_b, []), :b)
     :ok
   end
 
   def stop() do
-    # Send required messages to registered processes using send/2
+    send(:a, :stop)
+    send(:b, :stop)
   end
 
   def send(n) do
@@ -38,7 +40,8 @@ defmodule Pingpong do
       {:msg, msg, n} ->
         IO.puts("ping...")
         :timer.sleep(500)
-        # Send appropriate message to the other process and enter the loop again
+        send(:b, {:msg, msg, n - 1})
+        loop_a()
     after
       25000 ->
         IO.puts("Ping got bored, exiting.")
@@ -57,7 +60,8 @@ defmodule Pingpong do
       {:msg, msg, n} ->
         IO.puts("pong!")
         :timer.sleep(500)
-        # Send appropriate message to the other process and enter the loop again
+        send(:a, {:msg, msg, n - 1})
+        loop_b()
     after
       25000 ->
         IO.puts("Pong got bored, exiting.")
