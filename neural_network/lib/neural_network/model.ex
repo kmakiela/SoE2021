@@ -10,8 +10,8 @@ defmodule NeuralNetwork.Model do
   defn init_random_params do
     w1 = Nx.random_normal({784, 128}, 0.0, 0.1, names: [:input, :layer])
     b1 = Nx.random_normal({128}, 0.0, 0.1, names: [:layer])
-    w2 = #???
-    b2 = #???
+    w2 = Nx.random_normal({128, 10}, 0.0, 0.1, names: [:layer, :output])
+    b2 = Nx.random_normal({10}, 0.0, 0.1, names: [:output])
     {w1, b1, w2, b2}
   end
 
@@ -19,14 +19,20 @@ defmodule NeuralNetwork.Model do
   Softmax function computed only for the output layer
   """
   defn softmax(logits) do
-    #???
+    Nx.exp(logits) / Nx.sum(Nx.exp(logits), axes: [:output], keep_axes: true)
   end
 
   @doc """
   Prediction function. Does one step forward in a network with a given formula
   """
   defn predict({w1, b1, w2, b2}, batch) do
-    #???
+    batch
+    |> Nx.dot(w1)
+    |> Nx.add(b1)
+    |> Nx.logistic()
+    |> Nx.dot(w2)
+    |> Nx.add(b2)
+    |> softmax()
   end
 
   @doc """
