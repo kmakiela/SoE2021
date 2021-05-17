@@ -4,7 +4,7 @@ defmodule NeuralNetwork.Parser do
   """
   @images "train-images-idx3-ubyte.gz"
   @labels "train-labels-idx1-ubyte.gz"
-  @batch_size 100
+  @batch_size 10
 
   defp unzip_cache_or_download(zip) do
     base_url = 'https://storage.googleapis.com/cvdf-datasets/mnist/'
