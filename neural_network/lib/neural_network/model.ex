@@ -39,8 +39,8 @@ defmodule NeuralNetwork.Model do
   Computes the value of a loss function between given predictions and true labels
   """
   defn loss({w1, b1, w2, b2}, batch_images, batch_labels) do
-    predictions = #???
-    -Nx.sum(Nx.mean(Nx.log(predictions) * batch_labels, axes: [:output]))
+    preds = predict({w1, b1, w2, b2}, batch_images)
+    -Nx.sum(Nx.mean(Nx.log(preds) * batch_labels, axes: [:output]))
   end
 
   @doc """
@@ -48,7 +48,13 @@ defmodule NeuralNetwork.Model do
   """
   defn update({w1, b1, w2, b2} = params, batch_images, batch_labels) do
     {grad_w1, grad_b1, grad_w2, grad_b2} = grad(params, &loss(&1, batch_images, batch_labels))
-    #???
+    step = 0.01
+    {
+      w1 - grad_w1 * step,
+      b1 - grad_b1 * step,
+      w2 - grad_w2 * step,
+      b2 - grad_b2 * step
+    }
   end
 
   def train(images, labels) do

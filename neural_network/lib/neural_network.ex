@@ -3,9 +3,12 @@ defmodule NeuralNetwork do
   Documentation for NeuralNetwork.
   """
   alias NeuralNetwork.Parser
+  alias NeuralNetwork.Model
 
   def run do
     {images, labels} = Parser.download()
-    IO.inspect([hd(images), hd(labels)])
+    images_200 = Enum.take(images, 200)
+    labels_200 = Enum.take(labels, 200)
+    Model.train(images_200, labels_200)
   end
 end
