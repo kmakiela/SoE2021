@@ -52,4 +52,18 @@ defmodule NeuralNetwork.Parser do
 
     {train_images, train_labels}
   end
+
+  def get_preatrained_params() do
+    {:ok, w1_bin} = File.read("w1")
+    {:ok, w2_bin} = File.read("w2")
+    {:ok, b1_bin} = File.read("b1")
+    {:ok, b2_bin} = File.read("b2")
+
+    w1 = Nx.from_binary(w1_bin, {:f, 32}) |> Nx.reshape({784, 128})
+    w2 = Nx.from_binary(w2_bin, {:f, 32}) |> Nx.reshape({128, 10})
+    b1 = Nx.from_binary(b1_bin, {:f, 32})
+    b2 = Nx.from_binary(b2_bin, {:f, 32})
+
+    {w1, b1, w2, b2}
+  end
 end

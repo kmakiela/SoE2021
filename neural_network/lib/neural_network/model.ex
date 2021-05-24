@@ -19,7 +19,7 @@ defmodule NeuralNetwork.Model do
   Softmax function computed only for the output layer
   """
   defn softmax(logits) do
-    Nx.exp(logits) / Nx.sum(Nx.exp(logits), axes: [:output], keep_axes: true)
+    Nx.exp(logits) / Nx.sum(Nx.exp(logits), axes: [-1], keep_axes: true)
   end
 
   @doc """
