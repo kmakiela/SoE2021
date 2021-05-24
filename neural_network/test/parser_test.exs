@@ -10,7 +10,7 @@ defmodule NeuralNetwork.ParserTest do
       }
     end
 
-    test "Download test", context = %{images_path: images_path, labels_path: labels_path} do
+    test "Download test", _context = %{images_path: images_path, labels_path: labels_path} do
       assert {images, labels} = Parser.download()
       assert {images_2, labels_2} = Parser.download(images_path, labels_path)
 
@@ -18,6 +18,9 @@ defmodule NeuralNetwork.ParserTest do
       assert labels == labels_2
 
       # Assert that both images and labels are lists and their size is the same
+      assert is_list(images)
+      assert is_list(labels)
+      assert length(images) == length(labels)
     end
   end
 end
